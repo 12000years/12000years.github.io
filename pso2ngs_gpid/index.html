@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-TW">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>GPID</title>
+		<style>
+body {
+	background-color: #F0F0F0;
+	font-family: Arial;
+}
+.timeDiv {
+	font-size: 24px;
+}
+.table {
+	border-collapse: collapse;
+}
+.table td {
+	border: 1px solid #000000;
+	padding: 0px 10px 0px 10px;
+	white-space: nowrap;
+}
+.titleTr {
+	background-color: #C0C0C0;
+}
+.oddTr {
+	background-color: #F0F0F0;
+}
+.evenTr {
+	background-color: #FFFFFF;
+}
+.obviousTr {
+	background-color: #7DB9DE;
+}
+		</style>
+		<script>
+function DateToString($time, $gmt) {
+	var $year = $time.getFullYear();
+	var $month = $time.getMonth() + 1;
+	if ($month < 10) {
+		$month = '0' + $month;
+	}
+	var $day = $time.getDate();
+	if ($day < 10) {
+		$day = '0' + $day;
+	}
+	var $hour = $time.getHours();
+	if ($hour < 10) {
+		$hour = '0' + $hour;
+	}
+	var $minute = $time.getMinutes();
+	if ($minute < 10) {
+		$minute = '0' + $minute;
+	}
+	var $second = $time.getSeconds();
+	if ($second < 10) {
+		$second = '0' + $second;
+	}
+	var $timeZone = $time.getTimezoneOffset() / 60 * -1;
+	if ($timeZone >= 0) {
+		$timeZone = '+' + $timeZone;
+	}
+	if ($gmt) {
+		return $year + '/' + $month + '/' + $day + ' ' + $hour + ':' + $minute + ':' + $second + ' (GMT' + $timeZone + ')';
+	}
+	return $year + '/' + $month + '/' + $day + ' ' + $hour + ':' + $minute + ':' + $second;
+}
+function Main() {
+	var $data = [
+		['0', '  ', '   ', '   '],
+		[' ', '9 ', '   ', '047'],
+		[' ', '4 ', '28 ', '35 '],
+		['1', '  ', '   ', '   '],
+		[' ', '8 ', '7  ', '12 '],
+		[' ', '5 ', '69 ', '   '],
+		['2', '  ', '   ', '   '],
+		[' ', '7 ', '1  ', '   '],
+		[' ', '6 ', '08 ', '   '],
+		['3', '  ', '   ', '   '],
+		[' ', '6 ', '457', '   '],
+		[' ', '7 ', '26 ', '   '],
+		['4', '0 ', '   ', '   '],
+		[' ', '5 ', '   ', '237'],
+		[' ', '38', '06 ', '   '],
+		['5', '  ', '   ', '   '],
+		[' ', '4 ', '27 ', '   '],
+		[' ', '9 ', '   ', '358'],
+		['6', '  ', '   ', '   '],
+		[' ', '3 ', '4  ', '   '],
+		[' ', '0 ', '39 ', '   '],
+		['7', '  ', '   ', '   '],
+		[' ', '2 ', '7  ', '   '],
+		[' ', '1 ', '25 ', '   '],
+		['8', '  ', '   ', '   '],
+		[' ', '1 ', '   ', '57 '],
+		[' ', '2 ', '139', '   '],
+		['9', '  ', '   ', '   ']
+	];
+	var $day = Math.floor((new Date() - new Date(1690916400000)) / 86400000);
+	var $j = $day % 28;
+	var $div = document.createElement('div');
+	$div.className = 'timeDiv';
+	$div.appendChild(document.createTextNode(
+		DateToString(new Date(1690916400000 + 86400000 * $day), false) + ' ~ ' + 
+		DateToString(new Date(1690916400000 + 86400000 * ($day + 1)), true)
+	));
+	document.body.appendChild($div);
+	var $table = document.createElement('table');
+	$table.className = 'table';
+	var $tr = $table.insertRow();
+	$tr.className = 'titleTr';
+	$tr.insertCell().appendChild(document.createTextNode('虹 (625)'));
+	$tr.insertCell().appendChild(document.createTextNode('金 (315)'));
+	$tr.insertCell().appendChild(document.createTextNode('青 (250)'));
+	$tr.insertCell().appendChild(document.createTextNode('青 (200)'));
+	for (var $i = 0; $i < $data.length; $i++) {
+		var $tr = $table.insertRow();
+		if ($i == $j) {
+			$tr.className = 'obviousTr';
+		} else if ($i % 2 == 0) {
+			$tr.className = 'evenTr';
+		} else {
+			$tr.className = 'oddTr';
+		}
+		$tr.insertCell().innerHTML = $data[$i][0].replace(/ /g, '').replace(/(.)/g, 'GPID$1,&nbsp;&nbsp;').replace(/,&nbsp;&nbsp;$/, '');
+		$tr.insertCell().innerHTML = $data[$i][1].replace(/ /g, '').replace(/(.)/g, 'GPID$1,&nbsp;&nbsp;').replace(/,&nbsp;&nbsp;$/, '');
+		$tr.insertCell().innerHTML = $data[$i][2].replace(/ /g, '').replace(/(.)/g, 'GPID$1,&nbsp;&nbsp;').replace(/,&nbsp;&nbsp;$/, '');
+		$tr.insertCell().innerHTML = $data[$i][3].replace(/ /g, '').replace(/(.)/g, 'GPID$1,&nbsp;&nbsp;').replace(/,&nbsp;&nbsp;$/, '');
+	}
+	document.body.appendChild($table);
+}
+		</script>
+	</head>
+	<body onload="Main()"></body>
+</html>
